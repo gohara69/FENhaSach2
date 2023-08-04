@@ -1,0 +1,48 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Receipt</h1>
+
+        <div class="dropdown">
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Look for
+            </a>
+          
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="#">All</a>
+              <a class="dropdown-item" href="#">Success</a>
+              <a class="dropdown-item" href="#">Pending</a>
+            </div>
+          </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Total</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let receipt of receipts">
+          <tr>
+            <th scope="row">{{receipt.id}}</th>
+            <td>{{receipt.firstname}} {{receipt.lastname}}</td>
+            <td>{{receipt.address}} - {{receipt.ward}} - {{receipt.address}}</td>
+            <td>{{receipt.total}}</td>
+            <td>{{receipt.status}}</td>
+          </tr>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+          <li class="page-item" *ngFor="let i of fakeArray(totalPages)">
+            <a class="page-link" (click)="goToPage(i+1)">{{i+1}}</a>
+          </li>
+        </ul>
+      </nav>
+</div>

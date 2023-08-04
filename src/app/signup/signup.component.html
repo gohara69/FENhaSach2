@@ -1,0 +1,58 @@
+<div class="container mx-auto" style="width: 550px;">
+    <h1>Create an Account</h1>
+    <form [formGroup]="signupForm" (ngSubmit)="submitSignupForm()">
+        <div class="mb-3">
+            <label for="email">
+                Email
+            </label>
+            <input 
+                type="text" 
+                id="email" class="form-control"
+                formControlName="email"
+            />
+            <div *ngIf="submited && signupForm.get('email')?.hasError('required')">
+                <span class="text-danger">Email must not be empty</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password">
+                Password
+            </label>
+            <input 
+                type="password" 
+                id="password" class="form-control"
+                formControlName="password"
+            />
+            <div *ngIf="submited && signupForm.get('password')?.hasError('required')">
+                <span class="text-danger">Email must not be empty</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="retypepassword">
+                Password Confirmation
+            </label>
+            <input 
+                type="password" 
+                id="retypepassword" class="form-control"
+                formControlName="retypepassword"
+            />
+            <div *ngIf="submited && signupForm.get('retypepassword')?.hasError('required') && notMatch">
+                <span class="text-danger">Password confirmation must not be empty</span>
+            </div>
+            <div *ngIf="submited && notMatch">
+                <span class="text-danger">Password confirmation must be the same with password</span>
+            </div>
+        </div>
+        <div class="mb-3">
+            By creating an account, you agree to Bookshop’s 
+            <a href="#">Privacy Notice</a> and
+            <a href="#">Terms of Use.</a>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+        <div class="mb-3">
+            or <a [routerLink]="['/login']">Login as Existing Customer</a>
+        </div>
+    </form>
+</div>

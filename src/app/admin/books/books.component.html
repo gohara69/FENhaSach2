@@ -1,0 +1,300 @@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h1>Books</h1>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
+            </svg>
+            Add new book
+        </button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Thumbnail</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Pages</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let book of books">
+                <th scope="row">{{book.id}}</th>
+                <td style="width: 120px;">
+                    <img *ngIf="book.thumbnail.startsWith('https:')" 
+                        src={{book.thumbnail}} 
+                        class="img-fluid img-thumbnail" 
+                        style="width: 100%;"
+                    />
+                    <img *ngIf="!book.thumbnail.startsWith('https:')" 
+                        src="./../../../assets/image/books/{{book.thumbnail}}" 
+                        class="img-fluid img-thumbnail" 
+                        style="width: 100%;"
+                    />
+                </td>
+                <td>
+                    {{book.tenSach}}
+                </td>
+                <td>
+                    {{book.soLuong}}
+                </td>
+                
+                <td>
+                    ${{book.giaBan}}
+                </td>
+                <td>
+                    {{book.soTrang}}
+                </td>
+                <td>
+                    {{book.theLoai.tenTheLoai}}
+                </td>
+                <td>
+                    <button class="btn btn-warning me-1"  
+                        data-bs-toggle="modal" 
+                        data-bs-target="#modalUpdate"
+                        (click)="onUpdate(book)"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill" viewBox="0 0 16 16">
+                            <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"/>
+                        </svg>
+                    </button>
+
+                    <button class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal" id="modalCreate">
+        <div class="modal-dialog">
+          <div class="modal-content px-3">
+      
+            <div class="modal-header">
+              <h4 class="modal-title">Create new book</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="formBook" (ngSubmit)="createBook()">
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span> Name of book</label>
+                        <input 
+                            type="text" class="form-control"
+                            formControlName="nameBook">
+                        <div *ngIf="submited && formBook.get('nameBook')?.hasError('required')" 
+                            class="text-danger">
+                            Please enter name of the book
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span>Genre</label>
+                        <select class="form-select" formControlName="genre">
+                            <option disabled></option>  
+                            <option *ngFor="let genre of theLoais" [ngValue]="genre.id">{{genre.tenTheLoai}}</option>
+                        </select>
+                        <div *ngIf="submited && formBook.get('genre')?.hasError('required')" 
+                            class="text-danger">
+                            Please enter genre
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2 row">
+                        <div class="col">
+                            <label><span class="text-danger">(*)</span>Quantity</label>
+                            <input 
+                                type="number" class="form-control"
+                                min="0" value=""
+                                formControlName="quantity">
+                            <div *ngIf="submited && formBook.get('quantity')?.hasError('required')" 
+                                class="text-danger">
+                                Please enter quantity
+                            </div>
+                            <div *ngIf="submited && formBook.get('quantity')?.hasError('numberPositive')" 
+                                class="text-danger">
+                                Quantity must greater than 0
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <label><span class="text-danger">(*)</span>Cost</label>
+                            <input 
+                                type="number" class="form-control"
+                                step="0.01" min="0"
+                                formControlName="cost">
+                            <div *ngIf="submited && formBook.get('cost')?.hasError('required')" 
+                                class="text-danger">
+                                Please enter cost
+                            </div>
+                            <div *ngIf="submited && formBook.get('cost')?.hasError('numberPositive')" 
+                                class="text-danger">
+                                Cost must greater than 0
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label>Thumbnail</label>
+                        <input 
+                            type="file" class="form-control"
+                            id="inputFile"
+                        >
+                    </div>
+
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span>Pages</label>
+                        <input 
+                            type="number" class="form-control"
+                            min="0"
+                            formControlName="page">
+                        <div *ngIf="submited && formBook.get('page')?.hasError('required')" 
+                            class="text-danger">
+                            Please enter page
+                        </div>
+                        <div *ngIf="submited && formBook.get('page')?.hasError('numberPositive')" 
+                            class="text-danger">
+                            Page must greater than 0
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success float-end mt-2">Create</button>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal" id="modalUpdate">
+        <div class="modal-dialog">
+          <div class="modal-content px-3">
+      
+            <div class="modal-header">
+              <h4 class="modal-title">Update book</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="formBook" (ngSubmit)="createBook()">
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span> Name of book</label>
+                        <input 
+                            type="text" class="form-control"
+                            formControlName="nameBook"
+                            [value]="book.tenSach"
+                        >
+                        <div *ngIf="submited && formBook.get('nameBook')?.hasError('required')" 
+                            class="text-danger">
+                            Please enter name of the book
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span>Genre</label>
+                        <select id="selectGenre" class="form-select" formControlName="genre">
+                            <option disabled></option>  
+                            <option *ngFor="let genre of theLoais" [ngValue]="genre.id" [selected]="genre.id===book.theLoai.id">{{genre.tenTheLoai}}</option>
+                        </select>
+                        <div *ngIf="submited && formBook.get('genre')?.hasError('required')" 
+                            class="text-danger">
+                            Please select genre
+                        </div>
+                    </div>
+                    
+                    <div class="mb-2 row">
+                        <div class="col">
+                            <label><span class="text-danger">(*)</span>Quantity</label>
+                            <input 
+                                type="number" class="form-control"
+                                min="0" [value]="book.soLuong"
+                                formControlName="quantity"
+                            >
+                            <div *ngIf="submited && formBook.get('quantity')?.hasError('required')" 
+                                class="text-danger">
+                                Please enter quantity
+                            </div>
+                            <div *ngIf="submited && formBook.get('quantity')?.hasError('numberPositive')" 
+                                class="text-danger">
+                                Quantity must greater than 0
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <label><span class="text-danger">(*)</span>Cost</label>
+                            <input 
+                                type="number" class="form-control"
+                                step="0.01" min="0"
+                                formControlName="cost"
+                                [value]="book.giaBan"
+                            >
+                            <div *ngIf="submited && formBook.get('cost')?.hasError('required')" 
+                                class="text-danger">
+                                Please enter cost
+                            </div>
+                            <div *ngIf="submited && formBook.get('cost')?.hasError('numberPositive')" 
+                                class="text-danger">
+                                Cost must greater than 0
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class=row>
+                            <div class="col">
+                                <div *ngIf="book.thumbnail">
+                                    <td style="width: 120px;">
+                                        <img *ngIf="book.thumbnail.startsWith('https:')" 
+                                            src={{book.thumbnail}} 
+                                            class="img-fluid img-thumbnail" 
+                                            style="width: 100%;"
+                                        />
+                                        <img *ngIf="!book.thumbnail.startsWith('https:')" 
+                                            src="./../../../assets/image/books/{{book.thumbnail}}" 
+                                            class="img-fluid img-thumbnail" 
+                                            style="width: 100%;"
+                                        />
+                                    </td>
+                                </div>
+                            </div>
+                        </div>
+                        <label>Thumbnail</label>
+                        <input 
+                            type="file" class="form-control"
+                            id="inputFileUpdate"
+                            [value]="book.thumbnail"
+                        >
+                    </div>
+
+                    <div class="mb-2">
+                        <label><span class="text-danger">(*)</span>Pages</label>
+                        <input 
+                            type="number" class="form-control"
+                            min="0"
+                            formControlName="page"
+                            [value]="book.soTrang"
+                        >
+                        <div *ngIf="submited && formBook.get('page')?.hasError('required')" 
+                            class="text-danger">
+                            Please enter page
+                        </div>
+                        <div *ngIf="submited && formBook.get('page')?.hasError('numberPositive')" 
+                            class="text-danger">
+                            Page must greater than 0
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning float-end mt-2">Update</button>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+        
+</div>

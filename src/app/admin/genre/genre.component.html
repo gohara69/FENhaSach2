@@ -1,0 +1,94 @@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <h1>Genre</h1>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
+            </svg>
+            Add new genre
+        </button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let theLoai of theLoais">
+                <th scope="row">{{theLoai.id}}</th>
+                <td>{{theLoai.tenTheLoai}}</td>
+                <td>
+                    <button class="btn btn-warning me-1" (click)="onUpdate(theLoai)" data-bs-toggle="modal" data-bs-target="#modalUpdate">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable-circle-fill" viewBox="0 0 16 16">
+                            <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"/>
+                        </svg>
+                    </button>
+
+                    <button class="btn btn-danger" (click)="onDelete(theLoai)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal" id="modalCreate">
+        <div class="modal-dialog">
+          <div class="modal-content px-3">
+      
+            <div class="modal-header">
+              <h4 class="modal-title">Create new genre</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="formGenre" (ngSubmit)="createGenre()">
+                    <label><span class="text-danger">(*)</span> Name of genre</label>
+                    <input 
+                        type="text" class="form-control"
+                        formControlName="nameGenre">
+                    <div *ngIf="submited && formGenre.get('nameGenre')?.hasError('required')" 
+                        class="text-danger">
+                        Please enter name of genre
+                    </div>
+                    <button type="submit" class="btn btn-success float-end mt-2">Create</button>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal" id="modalUpdate">
+        <div class="modal-dialog">
+          <div class="modal-content px-3">
+      
+            <div class="modal-header">
+              <h4 class="modal-title">Update genre</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="formGenre" (ngSubmit)="updateGenre()">
+                    <label><span class="text-danger">(*)</span> Name of genre</label>
+                    <input 
+                        id="inputUpdateGenre"
+                        type="text" class="form-control"
+                        formControlName="nameGenre">
+                    <div *ngIf="submited && formGenre.get('nameGenre')?.hasError('required')" 
+                        class="text-danger">
+                        Please enter name of genre
+                    </div>
+                    <button type="submit" class="btn btn-warning float-end mt-2">Update</button>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+</div>

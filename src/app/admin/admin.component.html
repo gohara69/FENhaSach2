@@ -1,0 +1,61 @@
+<div *ngIf="isLogin" class="row mx-20" style="min-height: 720px;">
+    <!-- Navbar -->
+    <div class="col-2">
+        <div class="bg-primary">
+            <div class="row">
+                <a [routerLink]="['/admin/dashboard']" class="col d-flex align-items-center mb-lg-0 text-dark text-decoration-none">
+                    <img 
+                        src="https://rails-assets-us.bookshop.org/ds/images/logo.041f4577edde0efff6b67907832d4c3dfd52407b.svg" 
+                        alt="Bookshop.org logo" 
+                        class="img-fluid px-2 py-2"
+                    />
+                </a>
+            </div>
+            
+            <hr/>
+
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary"
+                        [routerLink]="['/admin/receipt']"
+                    >
+                        Receipt
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary"
+                        [routerLink]="['/admin/genre']"
+                    >
+                        Genre
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary"
+                        [routerLink]="['/admin/books']"
+                    >
+                        Book
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End navbar -->
+
+    <div class="col-md-10">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<div *ngIf="!isLogin" class="container">
+    <div class="misc-wrapper ms-auto me-auto text-center">
+      <h2 class="mb-2 mx-2">You are not authorized!</h2>
+      <p class="mb-4 mx-2">You do not have permission to view this page using the credentials that you have provided while login. <br> Please contact your site administrator.</p>
+      <a [routerLink]="['/client-home']" class="btn btn-primary">Back to home</a>
+      <div class="mt-5">
+        <img src="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/img/illustrations/girl-with-laptop-light.png" alt="page-misc-not-authorized-light" width="450" class="img-fluid" data-app-dark-img="illustrations/girl-with-laptop-dark.png" data-app-light-img="illustrations/girl-with-laptop-light.png">
+      </div>
+    </div>
+  </div>

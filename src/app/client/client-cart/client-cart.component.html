@@ -1,0 +1,156 @@
+<div class="h-100 h-custom">
+    <div class="container h-100 py-5">
+      <div *ngIf="sumTotal != 0">
+        <div class="row">
+          <div class="col d-flex flex-row-reverse">
+            <div *ngIf="books.length > 0">
+              <button type="button" class="btn btn-primary btn-block btn-lg border-radius-75" style="font-size: 15px;">
+                <div [routerLink]="['/client-checkout']">
+                  <span>Checkout <span class="total">${{sumTotal}}</span></span>
+                </div>
+              </button>
+            </div>
+            
+            <div *ngIf="books.length == 0">
+              <button type="button" class="btn btn-secondary btn-block btn-lg border-radius-75" style="font-size: 15px;">
+                <div>
+                  <span>Checkout <span class="total">$0</span></span>
+                </div>
+              </button>
+            </div>
+          </div>
+      </div>
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="h5">Shopping Bag</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of books">
+                <th scope="row">
+                  <div class="d-flex align-items-center">
+                    <img src={{book.thumbnail}} class="img-fluid rounded-3"
+                      style="width: 120px;" alt="Book">
+                    <div class="flex-column ms-4">
+                      <p class="mb-2">{{book.tenSach}}</p>
+                      <span class="mb-0">{{book.tacGia}}</span> 
+                    </div>
+                  </div>
+                </th>
+                <td class="align-middle">
+                  <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2 text-decoration-none"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepDown(); subTotal()"
+                      (click)="updateHeader()"
+                      >
+                      -
+                    </button>
+
+                    <input min="0" name="quantity" value="{{book.quantity}}" type="number"
+                      class="form-control form-control-sm item-quantity" style="width: 50px;" />
+
+                    <button class="btn btn-link px-2 text-decoration-none"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepUp(); ; subTotal()"
+                      (click)="updateHeader()"
+                      >
+                      +
+                    </button>
+                  </div>
+                  
+                </td>
+                <td class="align-middle flex-column">
+                  <input type="hidden" class="item-giaBanDau" value="{{book.giaBanDau}}"/>
+                  <input type="hidden" class="item-giaBan" value="{{book.giaBan}}"/>
+                  <p 
+                      *ngIf="book.giaBan != book.giaBanDau"
+                      class="mb-0 item-totalGiaBanDau" 
+                      style="font-weight: 500; text-decoration: line-through; color: red;">
+                      ${{(book.quantity * +(book.giaBanDau)).toFixed(2)}}
+                  </p>
+                  <p class="mb-0 item-totalGiaBan" style="font-weight: 500;">${{+(book.quantity * (+book.giaBan)).toFixed(2)}}</p>
+                </td>
+                <td class="align-middle" data-hook="cart_item_delete">
+                  <a (click)="removeItem(book)">
+                    <img width="14" height="18" src="https://rails-assets-us.bookshop.org/assets/ic_trash-c72efaf6e64b288202ce98c774e7edf643dbe615629bb091f8534be1664f707b.svg">
+                  </a>    
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+          <div class="card-body p-4">
+            <div class="row d-flex justify-content-between">
+              <div class="col-lg-5">
+                  <button type="button" 
+                    class="d-inline-block btn btn-secondary btn-block btn-lg border-radius-75" 
+                    style="font-size: 15px; margin-right: 5px;"
+                  >
+                      <div 
+                        class="d-flex justify-content-between" 
+                        (click)="clearCart()"
+                        onclick="clearCartJs()"
+                      >
+                        <span>Empty cart</span>
+                      </div>
+                  </button>
+                  <button type="button" class="d-inline-block btn btn-primary btn-block btn-lg border-radius-75" style="font-size: 15px;">
+                      <div class="d-flex justify-content-between" [routerLink]="['/client-home']">
+                        <span>Continue Shopping</span>
+                      </div>
+                  </button>
+              </div>
+              <div class="col-lg-4 col-xl-3">
+                <div 
+                  class="d-flex justify-content-between mb-4" 
+                  style="font-weight: 500; font-size: 15px;"
+                  [routerLink]="['/client-checkout']"
+                >
+                  <p class="mb-2">Total </p>
+                  <p class="mb-2" class="total">${{sumTotal}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-end">
+                  <div *ngIf="books.length > 0">
+                    <button 
+                      type="button" 
+                      class="btn btn-primary btn-block btn-lg border-radius-75" 
+                      style="font-size: 15px;"
+                    >
+                      <div [routerLink]="['/client-checkout']">
+                        <span>Checkout <span class="total">${{sumTotal}}</span></span>
+                      </div>
+                    </button>
+                  </div>
+                  
+                  <div *ngIf="books.length == 0">
+                    <button type="button" class="btn btn-secondary btn-block btn-lg border-radius-75" style="font-size: 15px;">
+                      <div>
+                        <span>Checkout <span class="total">$0</span></span>
+                      </div>
+                    </button>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+      
+      <div *ngIf="sumTotal == 0">
+        You don't have any item in cart for checking-out
+      </div>
+    </div>
+</div>

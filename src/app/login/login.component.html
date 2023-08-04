@@ -1,0 +1,54 @@
+<div class="container mx-auto" style="width: 550px;">
+    <h1>Login as Existing Customer</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+        <div class="mb-3">
+            <label for="email">
+                Email
+            </label>
+            <input 
+                type="text" id="email" 
+                class="form-control"
+                formControlName="email"
+            />
+            <div
+                class="text-danger"
+                *ngIf="submmited && loginForm.get('email')?.hasError('required')"
+            >
+                Email must not be empty
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password">
+                Password
+            </label>
+            <input 
+                type="password" id="password" 
+                class="form-control"
+                formControlName="password"
+            />
+            <div
+                style="cursor: pointer;"
+                class="text-danger"
+                *ngIf="submmited && loginForm.get('password')?.hasError('required')"
+            >
+                Password must not be empty
+            </div>
+        </div>
+        <div class="mb-3">
+            <input id="remember" type="checkbox" class="custom-control-input" checked>
+            <label class="custom-control-label ps-1" for="remember">Remember me</label>
+        </div>
+        <div class="mb-3">
+            By creating an account, you agree to Bookshop’s 
+            <a href="#">Privacy Notice</a> and
+            <a href="#">Terms of Use.</a>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <div class="mb-3">
+            or <a [routerLink]="['/signup']">Create a new account</a>  | 
+            <a href="#">Forgot Password?</a>
+        </div>
+    </form>
+</div>

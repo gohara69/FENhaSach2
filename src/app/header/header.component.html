@@ -1,0 +1,59 @@
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="#" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none" (click)="initializeSachs()">
+            <img src="https://rails-assets-us.bookshop.org/ds/images/logo.041f4577edde0efff6b67907832d4c3dfd52407b.svg" alt="Bookshop.org logo">
+        </a>
+
+        <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        </div>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input 
+            type="search" 
+            class="form-control" 
+            placeholder="Search by tenSach" 
+            [(ngModel)]="searchText" 
+            (keyup.enter)="searchTenSach($event)" 
+            [ngModelOptions]="{standalone: true}"
+          />
+        </form>
+        <a *ngIf="!isLogin" [routerLink]= "['/login']" class="mx-3 position-relative d-inline-block" role="button" aria-expanded="false"> 
+          Login
+        </a>
+        <div 
+          *ngIf="isLogin" 
+          class="text-primary mx-3 position-relative d-inline-block"
+          (click)="onLoginOut()"
+        > 
+          Logout
+        </div>
+        <a [routerLink]= "['/client-cart']" class="mx-3 text-danger position-relative d-inline-block" role="button" aria-expanded="false"> 
+          <img src="https://rails-assets-us.bookshop.org/ds/images/basket.76e8fe7b84404cf9232df8188db62fd33e0c6453.svg" 
+            alt="mdo" width="25" height="25" class="rounded-circle">
+          <span class="position-absolute quantity" style="font-size: 12px;" *ngIf="itemQuantity > 0">{{itemQuantity}}</span>
+        </a>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <ul class="nav justify-content-center">
+        <li class="nav-item genre-item" *ngFor="let tLoai of theLoais">
+          <a class="nav-link" [routerLink]=" ['/client-genre', tLoai.id ]">{{tLoai.tenTheLoai}}</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <!--
+     [searchText]="searchText" [genreId]="genreId" (getItemQuantity)="getItemQuantity($event)"
+  -->
