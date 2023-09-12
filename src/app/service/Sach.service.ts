@@ -17,15 +17,15 @@ export class SachService{
     ){}
 
     getAllPosts(): Observable<Array<Sach>> {
-        return this.http.get<Array<Sach>>('http://localhost:8080/api/books');
+        return this.http.get<Array<Sach>>('http://localhost:5052/api/books');
     }
 
-    getAllBookForCard(): Observable<PageSachForCard> {
-        return this.http.get<PageSachForCard>('http://localhost:8080/api/books');
+    getAllBookForCard(): Observable<HttpResponse<SachForCard[]>> {
+        return this.http.get<HttpResponse<SachForCard[]>>('http://localhost:5052/api/Sach');
     }
 
-    getAllBookForCardSearchTenSach(name: string, page: number): Observable<PageSachForCard> {
-        return this.http.get<PageSachForCard>('http://localhost:8080/api/books?name=' + name + '&page=' + page);
+    getAllBookForCardSearchTenSach(name: string, page: number): Observable<HttpResponse<PageSachForCard>> {
+        return this.http.get<HttpResponse<PageSachForCard>>('http://localhost:5052/api/Sach?search=' + name + '&page=' + page);
     }
 
     getAllBookForCardsByPage(page: number): Observable<PageSachForCard> {

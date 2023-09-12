@@ -43,20 +43,16 @@ export class GenreComponent {
     this.submited = true;
     if(this.formGenre.valid){
       let genre = new TheLoai();
-      genre.createdBy = this.user.username;
-      genre.modifiedBy = this.user.username;
-      genre.createdDate = Util.toDateTime();
-      genre.modifiedDate = Util.toDateTime();
       genre.tenTheLoai = this.formGenre.get('nameGenre')?.value ?? "";
       this.theLoaiService.createGenre(genre).subscribe(response => {
         ($('#modalCreate') as any).modal('hide');
-        if(response.status == 200){
+        if(response.statusCode == 200){
           this.toast.success({detail:"SUCCESS",summary:'Adding genre successfully',duration:5000});
           this.theLoaiService.getAllTheLoais().subscribe(theLoai => {
             this.theLoais = theLoai.data;
             this.shareService.sendStatusData(true);
           });
-        } else if(response.status == 500){
+        } else if(response.statusCode == 500){
           this.toast.error({detail:"ERROR",summary:'Something went wrong cannot add genre',duration:5000});
         }
         this.submited = false;
@@ -75,11 +71,11 @@ export class GenreComponent {
 
   onDelete(theLoai: TheLoai){
     this.theLoaiService.deleteGenre(theLoai.id).subscribe(data => {
-      if(data.status == 400){
+      if(data.statusCode == 400){
         this.toast.error({detail:'ERROR', summary:'Genre has books foreign to, cannot be deleted', duration: 1500});
-      } else if(data.status == 500){
+      } else if(data.statusCode == 500){
         this.toast.error({detail:'ERROR', summary:'Genre does not in database', duration: 1500});
-      } else if(data.status == 200){
+      } else if(data.statusCode == 200){
         this.toast.success({detail:"SUCCESS",summary:'Deleting genre successfully',duration:1500});
           this.theLoaiService.getAllTheLoais().subscribe(theLoai => {
             this.theLoais = theLoai.data;
@@ -100,18 +96,16 @@ export class GenreComponent {
     if(this.formGenre.valid){
       let genre = new TheLoai();
       genre.id = this.genre.id;
-      genre.modifiedBy = this.user.username;
-      genre.modifiedDate = Util.toDateTime();
       genre.tenTheLoai = this.formGenre.get('nameGenre')?.value ?? "";
       this.theLoaiService.updateGenre(genre).subscribe(response => {
         ($('#modalUpdate') as any).modal('hide');
-        if(response.status == 200){
+        if(response.statusCode == 200){
           this.toast.success({detail:"SUCCESS",summary:'Upddating genre successfully',duration:5000});
           this.theLoaiService.getAllTheLoais().subscribe(theLoai => {
             this.theLoais = theLoai.data;
             this.shareService.sendStatusData(true);
           });
-        } else if(response.status == 500){
+        } else if(response.statusCode == 500){
           this.toast.error({detail:"ERROR",summary:'Something went wrong cannot update genre',duration:5000});
         }
         this.submited = false;

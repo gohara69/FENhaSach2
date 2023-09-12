@@ -63,10 +63,6 @@ export class BooksComponent {
     this.submited = true;
     if(this.formBook.valid){
       let book = new Sach();
-      book.createdBy = this.user.username;
-      book.modifiedBy = this.user.username;
-      book.createdDate = Util.toDateTime();
-      book.modifiedDate = Util.toDateTime();
       book.tenSach = this.formBook.get('nameBook')?.value ?? "";
       let theLoai = new TheLoai();
       theLoai.id = this.selectedGenre;
@@ -77,13 +73,13 @@ export class BooksComponent {
       book.soTrang = this.formBook.get('page')?.value ?? 0;
       this.sachService.createSachForDetail(book).subscribe(response => {
         ($('#modalCreate') as any).modal('hide');
-        if(response.status == 200){
+        if(response.statusCode == 200){
           this.toast.success({detail:"SUCCESS",summary:'Adding book successfully',duration:1500});
           this.sachService.getAllSachForDetail().subscribe(sachs => {
             this.books = sachs.data;
             this.shareService.sendStatusData(true);
           });
-        } else if(response.status == 500){
+        } else if(response.statusCode == 500){
           this.toast.error({detail:"ERROR",summary:'Something went wrong cannot add book',duration:1500});
         }
         this.submited = false;
@@ -127,8 +123,6 @@ export class BooksComponent {
     if(this.formBook.valid){
       let book = new Sach();
       book.id = this.book.id;
-      book.modifiedBy = this.user.username;
-      book.modifiedDate = Util.toDateTime();
       book.tenSach = this.formBook.get('nameBook')?.value ?? "";
       let theLoai = new TheLoai();
       theLoai.id = this.selectedGenre;

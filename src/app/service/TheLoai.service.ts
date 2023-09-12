@@ -14,8 +14,8 @@ export class TheLoaiService{
         private http : HttpClient,
     ){}
 
-    getAllTheLoais(): Observable<HttpResponse<Array<TheLoai>>> {
-        return this.http.get<HttpResponse<Array<TheLoai>>>('http://localhost:8000/api/admin/theloais');
+    getAllTheLoais(): Observable<HttpResponse<TheLoai[]>> {
+        return this.http.get<HttpResponse<TheLoai[]>>('http://localhost:5052/api/TheLoais');
     }
    
     createGenre(genre : TheLoai): Observable<HttpResponse<TheLoai>> {

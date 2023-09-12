@@ -51,14 +51,14 @@ export class ClientGenreComponent{
     if(name == ""){
       this.sachService.getAllBookForCardsByPage(i).subscribe(page =>{
         this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
+        this.totalPage = page.total;
+        this.currentPage = page.page;
       });
     } else {
       this.sachService.getAllBookForCardSearchTenSach(name, i).subscribe(page =>{
-        this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
+        this.books = page.data.content;
+        this.totalPage = page.data.total;
+        this.currentPage = page.data.page;
       });
     }
   }
@@ -66,8 +66,8 @@ export class ClientGenreComponent{
   showBooksByGenre(genreId: number,i: number){
     this.sachService.getAllBookForCardByTheLoaiId(genreId, i).subscribe(page =>{
       this.books = page.content;
-      this.totalPage = page.totalPages;
-      this.currentPage = page.pageable.pageNumber;
+      this.totalPage = page.total;
+      this.currentPage = page.page;
     });
   }
 

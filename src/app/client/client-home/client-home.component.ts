@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import { SachForCard } from 'src/app/model/sachmodel/SachForCard.model';
 import { CartService } from 'src/app/service/Cart.service';
 import { SachService } from 'src/app/service/Sach.service';
@@ -22,24 +24,35 @@ export class ClientHomeComponent implements OnChanges{
   constructor(
     private sachService : SachService,
     private shareService : shareService,
+    private toast : NgToastService,
+    private router : ActivatedRoute,
   ){
     if(this.searchText == ""){
-      this.sachService.getAllBookForCardsByPage(1).subscribe(page =>{
-        this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
+      this.sachService.getAllBookForCardSearchTenSach("", 1).subscribe(page =>{
+        if(page.statusCode == 200){
+          this.books = page.data.content;
+          this.totalPage = page.data.total;
+          this.currentPage = page.data.page;
+        }
+        else {
+          this.toast.error({detail:"ERROR",summary:'Something went wrong cannot show books',duration:1500});
+        }
       });
     } else {
       this.sachService.getAllBookForCardSearchTenSach(this.searchText, 1).subscribe(page =>{
-        this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
+        this.books = page.data.content;
+        this.totalPage = page.data.total;
+        this.currentPage = page.data.page;
       });
     }
     this.getItemQuantity.emit(this.itemQuantity);
   }
 
-  async ngOnInit(){}
+  async ngOnInit(){
+    if(this.router.snapshot.queryParamMap.get('search')){
+      console.log(this.router.snapshot.queryParamMap.get('search'));
+    }
+  }
 
   fakeArray(length: number): Array<number> {
     if (length >= 0) {
@@ -53,26 +66,18 @@ export class ClientHomeComponent implements OnChanges{
   }
 
   goToPage(name: string,i: number){
-    if(name == ""){
-      this.sachService.getAllBookForCardsByPage(i).subscribe(page =>{
-        this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
-      });
-    } else {
-      this.sachService.getAllBookForCardSearchTenSach(name, i).subscribe(page =>{
-        this.books = page.content;
-        this.totalPage = page.totalPages;
-        this.currentPage = page.pageable.pageNumber;
-      });
-    }
+    this.sachService.getAllBookForCardSearchTenSach(name,i).subscribe(page =>{
+      this.books = page.data.content;
+      this.totalPage = page.data.total;
+      this.currentPage = page.data.page;
+    });
   }
 
   showBooksByGenre(genreId: number,i: number){
     this.sachService.getAllBookForCardByTheLoaiId(genreId, i).subscribe(page =>{
       this.books = page.content;
-      this.totalPage = page.totalPages;
-      this.currentPage = page.pageable.pageNumber;
+      this.totalPage = page.total;
+      this.currentPage = page.page;
     });
   }
 

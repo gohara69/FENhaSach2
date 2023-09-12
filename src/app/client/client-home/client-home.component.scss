@@ -90,3 +90,6 @@ a{
 .dollars:before { 
     content:'$'; 
 }
+.pagination li{
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TheLoai } from '../model/TheLoai.model';
 import { TheLoaiService } from '../service/TheLoai.service';
 import { CartService } from '../service/Cart.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { shareService } from '../service/share';
 @Component({
   selector: 'app-header',
@@ -20,6 +20,7 @@ export class HeaderComponent{
     private theLoaiService : TheLoaiService,
     private router : Router,
     private shareService : shareService,
+    private route : ActivatedRoute,
   ){
     this.theLoaiService.getAllTheLoais().subscribe(tloai =>{
       this.theLoais = tloai.data;
@@ -51,13 +52,17 @@ export class HeaderComponent{
   }
 
   searchTenSach(event: any){
-    this.searchText = event.target.value;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        search: this.searchText
+      }
+    });
   }
 
   changeGenre(id: number){
     this.genreId = id;
     this.router.navigateByUrl('client-genre/${this.genreId}');
-    console.log(this.genreId);
   }
 
   getItemQuantity(data: any){
